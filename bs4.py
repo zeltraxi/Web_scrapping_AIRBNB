@@ -3,9 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-Nextsaturday = datetime.today() + timedelta(days=datetime.today().isoweekday() % 6)
+Nextsaturday = datetime.today() + timedelta(days=datetime.today().isoweekday() - 2)
 Nextsaturday = Nextsaturday.strftime("%Y-%m-%d")
-Nextsunday = datetime.today() + timedelta(days=datetime.today().isoweekday() % 7)
+Nextsunday = datetime.today() + timedelta(days=datetime.today().isoweekday() - 1)
 Nextsunday = Nextsunday.strftime("%Y-%m-%d")
 
 page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&refinement_paths%5B%5D=%2Fhomes&checkin="+Nextsaturday +"&checkout="+Nextsunday)
