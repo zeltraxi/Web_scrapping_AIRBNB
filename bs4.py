@@ -31,6 +31,23 @@ while i < len(airbnbdata):
         sdblist.append(0)
         pass
     #Options
+    option1 = place2.find_all('span')[0].text
+    option1list.append(option1)
+    try:
+        option2 = place2.find_all('span')[2].text
+        option2list.append(option2) 
+    except:
+        options2list.append(0)
+    try:
+        option3 = place2.find_all('span')[4].text
+        option3list.append(option3)
+    except:
+        option3list.append(0)
+    try:
+        option4 = place2.find_all('span')[6].text
+        option4list.append(option4)
+    except:
+        option4list.append(0)
     
     i += 1
  
@@ -39,6 +56,10 @@ df = pd.DataFrame({"Title":namelist,
                    "Room":roomlist,
                    "Bedlist":bedlist,
                    'Bathroom':sdblist,
+                   'Option1':option1list,
+                   'Option2':option2list,
+                   'Option3':option3list,
+                   'Option4':option4list,
                    'Price':pricelist
                   })
 
