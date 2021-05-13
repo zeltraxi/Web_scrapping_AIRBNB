@@ -2,7 +2,13 @@ import requests
 #Import BeautifulSoup
 from bs4 import BeautifulSoup
 import pandas as pd
-page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&refinement_paths%5B%5D=%2Fhomes&checkin=2021-05-15&checkout=2021-05-16")
+
+Nextsaturday = datetime.today() + timedelta(days=datetime.today().isoweekday() % 6)
+Nextsaturday = Nextsaturday.strftime("%Y-%m-%d")
+Nextsunday = datetime.today() + timedelta(days=datetime.today().isoweekday() % 7)
+Nextsunday = Nextsunday.strftime("%Y-%m-%d")
+
+page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&refinement_paths%5B%5D=%2Fhomes&checkin="+Nextsaturday +"&checkout="+Nextsunday)
 soup = BeautifulSoup(page.content,'html.parser')
 airbnbdata = soup.find_all('div',class_='_gig1e7')
 
