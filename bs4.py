@@ -8,7 +8,7 @@ Nextsaturday = Nextsaturday.strftime("%Y-%m-%d")
 Nextsunday = datetime.today() + timedelta(days=datetime.today().isoweekday() - 1)
 Nextsunday = Nextsunday.strftime("%Y-%m-%d")
 
-page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&refinement_paths%5B%5D=%2Fhomes&checkin="+Nextsaturday +"&checkout="+Nextsunday)
+page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&refinement_paths%5B%5D=%2Fhomes&checkin="+Nextsaturday+"&checkout="+Nextsunday)
 soup = BeautifulSoup(page.content,'html.parser')
 airbnbdata = soup.find_all('div',class_='_gig1e7')
 
