@@ -145,6 +145,9 @@ df_we = df_we.fillna(0)
 df_we = df_we.drop(columns=['Piscine1','Wifi1','Climatisation1','Cuisine1'])
 df_we = df_we[['Title','Traveller','Room','Bed','Bathroom','Piscine','Wifi','Climatisation','Cuisine','Price']]
 
+#Avoid Luxurious department in our model
+df_we = df_we.loc[df_we['Price'] < 300]
+
 #Variables
 X = df_we.iloc[:,:-1]
 #Target
@@ -212,7 +215,7 @@ elif modeldf.iloc[:,0].values == 'ETR':
 X_pred = pd.DataFrame({"Traveller":4,
                    "Room":4,
                    "Bed":3,
-                   'Bathroom':2,
+                   'Bathroom':1.5,
                    'Piscine':1,
                    'Wifi':1,
                    'Climatisation':1,
