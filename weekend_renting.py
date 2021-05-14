@@ -140,17 +140,6 @@ df_we = df_we.fillna(0)
 df_we = df_we.drop(columns=['Piscine1','Wifi1','Climatisation1','Cuisine1'])
 df_we = df_we[['Title','Traveller','Room','Bed','Bathroom','Piscine','Wifi','Climatisation','Cuisine','Price']]
 
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import ElasticNet
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.svm import SVR
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import ExtraTreesRegressor
-from sklearn.metrics import mean_absolute_error
-from sklearn.model_selection import train_test_split
-
 #Variables
 X = df_we.iloc[:,:-1]
 #Target
