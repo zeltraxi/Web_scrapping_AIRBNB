@@ -187,6 +187,34 @@ for name, model in models:
 
 ######## CHECK RESULT AND SELECT BEST METHOD ###########
 
+modeldf = pd.DataFrame({"Name":names,
+                   "MAE":results})
+
+modeldf = modeldf[modeldf.MAE == modeldf.MAE.min()]
+
+if modeldf.iloc[:,0].values == 'LR':
+    reg = LinearRegression().fit(X_train, y_train)
+    predictions = reg.predict(X_pred) 
+elif modeldf.iloc[:,0].values == 'LA':
+    reg = Lasso().fit(X_train, y_train)
+    predictions = reg.predict(X_pred)
+elif modeldf.iloc[:,0].values == 'EN':
+    reg = ElasticNet().fit(X_train, y_train)
+    predictions = reg.predict(X_pred) 
+elif modeldf.iloc[:,0].values == 'DTR':
+    reg = DecisionTreeRegressor().fit(X_train, y_train)
+    predictions = reg.predict(X_pred) 
+elif modeldf.iloc[:,0].values == 'KNR':
+    reg = KNeighborsRegressor().fit(X_train, y_train)
+    predictions = reg.predict(X_pred)
+elif modeldf.iloc[:,0].values == 'RFR':
+    reg = RandomForestRegressor().fit(X_train, y_train)
+    predictions = reg.predict(X_pred) 
+elif modeldf.iloc[:,0].values == 'ETR':
+    reg = ExtraTreesRegressor().fit(X_train, y_train)
+    predictions = reg.predict(X_pred)
+    
+#Insert your appartment
 X_pred = pd.DataFrame({"Traveller":4,
                    "Room":4,
                    "Bed":3,
@@ -196,10 +224,4 @@ X_pred = pd.DataFrame({"Traveller":4,
                    'Climatisation':1,
                    'Cuisine':1}, index=[0]
                      )
-knn = KNeighborsRegressor().fit(X_train, y_train)
-predictions = knn.predict(X_pred)
-#reg = LinearRegression().fit(X_train, y_train)
-#predictions = reg.predict(X_pred) 
-#regr = ElasticNet().fit(X_train, y_train)
-#predictions = regr.predict(X_pred) 
 print(round(predictions[0],2),'€')
