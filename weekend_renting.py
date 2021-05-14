@@ -21,12 +21,14 @@ from dateutil.relativedelta import *
 
 #Parameters
 ## Date
-Nextsaturday = datetime.today() + timedelta(days=datetime.today().isoweekday() - 2)
-Nextsaturday = Nextsaturday.strftime("%Y-%m-%d")
-Nextsunday = datetime.today() + timedelta(days=datetime.today().isoweekday() - 1)
+d = date.today()
+while d.weekday() != 5:
+    d += timedelta(1)
+Nextsaturday = d.strftime("%Y-%m-%d")
+Nextsunday = d + timedelta(1)
 Nextsunday = Nextsunday.strftime("%Y-%m-%d")
 ## Airbnb Page
-pg = ['0','20','40','60','80','100','120'',140','160']
+pg = ['0','20','40','60','80','100','120'',140','160','180','200']
 ## List initialization
 pricelist,namelist,travellerlist,roomlist,bedlist,sdblist = [],[],[],[],[],[]
 option1list,option2list,option3list,option4list = [],[],[],[]
@@ -105,11 +107,14 @@ df_we['Room'] = df_we['Room'].str.replace('S','0')
 df_we['Room'] = pd.to_numeric(df_we['Room'])
 df_we['Bed'] = df_we['Bed'].astype(str).str[0]
 df_we['Bed'] = pd.to_numeric(df_we['Bed'])
+#Erase useless space
+df_we['Price'] = df_we['Price'].str.replace("\u202f","")
 df_we['Price'] = df_we['Price'].astype(str).str[:-1]
 df_we['Price'] = pd.to_numeric(df_we['Price'])
 
 #Check if half bathroom
 df_we.loc[df_we['Bathroom'].str[2] == 's', 'Bathroom']  = df_we['Bathroom'].str[0]
+df_we.loc[df_we['Bathroom'].str[2] == ' ', 'Bathroom']  = df_we['Bathroom'].str[:1]
 df_we.loc[df_we['Bathroom'].str[2] == '5', 'Bathroom']  = df_we['Bathroom'].str[:3]
 df_we['Bathroom'] = df_we['Bathroom'].str.replace(',','.')
 df_we['Bathroom'] = pd.to_numeric(df_we['Bathroom'])
@@ -213,4 +218,5 @@ X_pred = pd.DataFrame({"Traveller":4,
                    'Climatisation':1,
                    'Cuisine':1}, index=[0]
                      )
-print(round(predictions[0],2),'€')
+
+print('\n Airbnb Estimated Price for a night between ', Nextsaturday,' & ', Nextsunday , 'is ',round(predictions[0],2),'€')
