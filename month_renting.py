@@ -29,15 +29,20 @@ lastmonth =  lastmonth+relativedelta(day=1)
 firstmonth = firstmonth.strftime("%Y-%m-%d")
 lastmonth = lastmonth.strftime("%Y-%m-%d")
 ## Airbnb Page
-pg = ['0','20','40','60','80','100','120'',140','160','180','200']
+page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&refinement_paths%5B%5D=%2Fhomes&checkin="+firstmonth+"&checkout="+lastmonth+"&flexible_trip_dates%5B%5D=june&flexible_trip_dates%5B%5D=may&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&click_referer=t%3ASEE_ALL%7Csid%3A9697aa3c-ab8b-43c2-ab38-348402f77282%7Cst%3AHOME_GROUPING_FLEXIBLE_DATES&flexible_date_search_filter_type=0&title_type=NONE&search_type=pagination&tab_id=home_tab&ne_lat=16.931993582281493&ne_lng=-99.37419621313472&sw_lat=16.434084058683805&sw_lng=-100.07663456762691&zoom=11&search_by_map=true&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&federated_search_session_id=251bdd36-3fe8-40af-9424-990ab890ca12&items_offset=0&section_offset=3")
+soup = BeautifulSoup(page.content,'html.parser')
+airbnbpage = soup.find_all('div',class_='_1h559tl')
+airbnbpg = airbnbpage[0].text
+airbnbpg = airbnbpg[4:6]
+airbnbpg = int(airbnbpg)
 ## List initialization
 pricelist,namelist,travellerlist,roomlist,bedlist,sdblist = [],[],[],[],[],[]
 option1list,option2list,option3list,option4list = [],[],[],[]
 
 # Web Scrapping for all the pages
-for pages in pg:
+for pages in range(0, 25*airbnbpg, 25):
     # Web scrapping request
-    page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&refinement_paths%5B%5D=%2Fhomes&checkin="+firstmonth+"&checkout="+lastmonth+"&flexible_trip_dates%5B%5D=june&flexible_trip_dates%5B%5D=may&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&click_referer=t%3ASEE_ALL%7Csid%3A9697aa3c-ab8b-43c2-ab38-348402f77282%7Cst%3AHOME_GROUPING_FLEXIBLE_DATES&flexible_date_search_filter_type=0&title_type=NONE&search_type=pagination&tab_id=home_tab&ne_lat=16.931993582281493&ne_lng=-99.37419621313472&sw_lat=16.434084058683805&sw_lng=-100.07663456762691&zoom=11&search_by_map=true&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&federated_search_session_id=251bdd36-3fe8-40af-9424-990ab890ca12&items_offset="+pages+"&section_offset=3")
+    page = requests.get("https://www.airbnb.fr/s/Acapulco--Mexique/homes?adults=1&refinement_paths%5B%5D=%2Fhomes&checkin="+firstmonth+"&checkout="+lastmonth+"&flexible_trip_dates%5B%5D=june&flexible_trip_dates%5B%5D=may&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&click_referer=t%3ASEE_ALL%7Csid%3A9697aa3c-ab8b-43c2-ab38-348402f77282%7Cst%3AHOME_GROUPING_FLEXIBLE_DATES&flexible_date_search_filter_type=0&title_type=NONE&search_type=pagination&tab_id=home_tab&ne_lat=16.931993582281493&ne_lng=-99.37419621313472&sw_lat=16.434084058683805&sw_lng=-100.07663456762691&zoom=11&search_by_map=true&place_id=ChIJyVDOroVXyoUR46SQivfYAZg&federated_search_session_id=251bdd36-3fe8-40af-9424-990ab890ca12&items_offset="+str(pages)+"&section_offset=3")
     # SOUP
     soup = BeautifulSoup(page.content,'html.parser')
     airbnbdata = soup.find_all('div',class_='_gig1e7')
@@ -189,7 +194,7 @@ for name, model in models:
 X_pred = pd.DataFrame({"Traveller":4,
                    "Room":4,
                    "Bed":3,
-                   'Bathroom':2,
+                   'Bathroom':1.5,
                    'Piscine':1,
                    'Wifi':1,
                    'Climatisation':1,
@@ -233,4 +238,4 @@ X_pred = pd.DataFrame({"Traveller":4,
                    'Cuisine':1}, index=[0]
                      )
 
-print('\n Airbnb Estimated Price for a rent between ', firstmonth,' & ', lastmonth , 'is ',round(predictions[0],2),'€')
+print('\nAirbnb Estimated Price for a rent between ', firstmonth,' & ', lastmonth , 'is ',round(predictions[0],2),'€')
