@@ -50,10 +50,10 @@ for pages in range(0, 25*airbnbpg, 25):
     while i < len(airbnbdata):
         j=0
         #Name 
-        nameairbnb = airbnbdata[i].find('span',class_='_bzh5lkq').text
+        nameairbnb = airbnbdata[i].find('span',class_='_1whrsux9').text
         namelist.append(nameairbnb)
         #Price
-        priceairbnb = airbnbdata[i].find('span',class_='_155sga30').text
+        priceairbnb = airbnbdata[i].find('span',class_='_krjbj').text
         pricelist.append(priceairbnb)
         #Place Data
         place = airbnbdata[i].find_all('div',class_='_kqh46o')[0]
@@ -116,7 +116,8 @@ df_month['Room'] = pd.to_numeric(df_month['Room'])
 df_month['Bed'] = df_month['Bed'].astype(str).str[0]
 df_month['Bed'] = pd.to_numeric(df_month['Bed'])
 #Erase useless space
-df_month['Price'] = df_month['Price'].str.replace("\u202f","") 
+df_month['Price'] = df_month['Price'].str.split(" ", n = 1, expand = True)
+df_month.loc[df_month['Price'].str.len() == 6 , 'Price']  = df_month['Price'].str[0] +df_month['Price'].str[2:]
 df_month['Price'] = df_month['Price'].astype(str).str[:-1]
 df_month['Price'] = pd.to_numeric(df_month['Price'])
 
