@@ -22,13 +22,11 @@ from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.metrics import mean_absolute_error
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
 from dateutil.relativedelta import *
-
+import warnings
+warnings.filterwarnings("ignore")
 #Tkinter
 from  tkinter import *
-from tkinter import messagebox
 from tkcalendar import *
 
 #Enter Function
@@ -250,9 +248,11 @@ def submit():
         reg = ExtraTreesRegressor().fit(X_train, y_train)
         predictions = reg.predict(X_pred)
     
-    
-    print('\nAirbnb Estimated Price for a rent between ', date1,' & ', date2 , 'is ',round(predictions[0],2),'€')
-
+    #Result
+    #label1 = Label(window, text= "Airbnb Estimated Price for a rent between, %s &  %s  is %f €" % (date1, date2,predictions[0]))
+    res =  str(round(predictions[0],2)) +'€'
+    label_text.set(res)
+    #print('\nAirbnb Estimated Price for a rent between ', date1,' & ', date2 , 'is ',round(predictions[0],2),'€')
 
 window= Tk()
 
@@ -263,13 +263,13 @@ i = 0
 j = 0
 #Title
 lbltitle= Label(window, text="Airbnb Price Detection", fg='red', font=("Helvetica", 16))
-lbltitle.grid(row=i, column=j)
+lbltitle.grid(row=i, column=j, columnspan=2)
 i += 1
 #City
 lblcity= Label(window, text="City" ,fg='black', font=("Helvetica", 14))
 lblcity.grid(row=i, column=j)
 j+=1
-City= Entry(window, text="City", textvariable=StringVar(), bd=5)
+City= Entry(window, text="City", textvariable=StringVar(), bd=2)
 City.grid(row=i, column=j)
  
 #Calendar
@@ -297,7 +297,7 @@ j = 0
 lblnbr= Label(window, text="Number of Travellers" , fg='black', font=("Helvetica", 14))
 lblnbr.grid(row=i, column=j)
 j += 1
-travellers= Entry(window, textvariable=IntVar() , bd=5)
+travellers= Scale(window, orient="horizontal", resolution=1,from_=1, to=10,activebackground="blue")
 travellers.grid(row=i, column=j)
 #Option
 #Room
@@ -306,7 +306,7 @@ j = 0
 lblRoom= Label(window, text="Room", fg='black', font=("Helvetica", 14))
 lblRoom.grid(row=i, column=j)
 j+=1
-Room= Entry(window, textvariable=IntVar(), text="Room", bd=5)
+Room= Scale(window, orient="horizontal", resolution=1,from_=1, to=10,activebackground="blue")
 Room.grid(row=i, column=j)
 
 #Bed
@@ -315,7 +315,7 @@ j = 0
 lblbed= Label(window, text="Bed", fg='black', font=("Helvetica", 14))
 lblbed.grid(row=i, column=j)
 j+=1
-Bed= Entry(window, textvariable=IntVar(), text="Bed", bd=5)
+Bed= Scale(window, orient="horizontal", resolution=1,from_=1, to=10,activebackground="blue")
 Bed.grid(row=i, column=j)
 
 #Bathroom
@@ -324,7 +324,7 @@ j = 0
 lblbathroom= Label(window, text="Bathroom", fg='black', font=("Helvetica", 14))
 lblbathroom.grid(row=i, column=j)
 j+=1
-Bathroom= Entry(window, textvariable=IntVar() , text="Bathroom", bd=5)
+Bathroom= Scale(window, orient="horizontal", resolution=0.5,from_=0.5, to=5,activebackground="blue")
 Bathroom.grid(row=i, column=j)
 
 #Wifi
@@ -356,14 +356,20 @@ Clim.grid(row=i, column=j, sticky='W')
 #Enter Button
 i += 1
 j = 0
-enterbtn= Button(window, text="Enter", fg='blue', height = 1, width = 10,  command = submit)
-enterbtn.grid(row=i, column=j)
+enterbtn= Button(window, text="Machine Learning Calculation", fg='blue', height = 1, width = 40,  command = submit)
+enterbtn.grid(row=i, column=j, columnspan=2)
 j += 1
 
 #Quit Button
+"""
 quitbtn= Button(window, text="Quit", fg='blue', height = 1, width = 10,command= window.destroy)
 quitbtn.grid(row=i, column=j)
+"""
+i += 1
+j = 0
+
+label_text = StringVar()
+result= Label(window, text="", textvariable=label_text, font=("Helvetica", 20,'bold')).grid(row=i,column=j, columnspan=2)
 
 #Launch
 window.mainloop()
-
